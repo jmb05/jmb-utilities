@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.EventObject;
 
-public abstract class Event<EC extends EventContext> extends EventObject {
+public abstract class Event<EC extends EventContext<?>> extends EventObject {
     private final EC ctx;
     private final String id;
 

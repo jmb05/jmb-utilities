@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class EventHandler<C extends EventContext> {
+public class EventHandler<C extends EventContext<?>> {
 
     private boolean valid = false;
     protected final Map<String, EventListenerList<C>> eventListeners = new ConcurrentHashMap<>();
@@ -51,7 +51,7 @@ public class EventHandler<C extends EventContext> {
         eventListeners.put(id + ":" + listener.getId(), listenerBatch);
     }
 
-    public <E extends Event<C>> void performEvent(E evt) {
+    public <E extends Event> void performEvent(E evt) {
         if (isValid()) {
             Logger.trace("Performing Event: " + id + ":" + evt.getId());
             EventListenerList<C> listenerBatch = eventListeners.get(id + ":" + evt.getId());

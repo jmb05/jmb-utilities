@@ -18,10 +18,6 @@
 
 package net.jmb19905.util.commands;
 
-import net.jmb19905.util.commands.registry.CommandRegistry;
-import net.jmb19905.util.commands.registry.CommandType;
-import net.jmb19905.util.commands.registry.ICommand;
-
 import java.util.Arrays;
 import java.util.Scanner;
 

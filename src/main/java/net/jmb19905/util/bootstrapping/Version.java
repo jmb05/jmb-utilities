@@ -30,13 +30,17 @@ public class Version {
     private int typeVersion;
 
     public Version(String versionString) {
-        if(versionString == null) invalidate();
+        if(versionString == null || versionString.isBlank()) invalidate();
         else {
             String[] parts = versionString.split("-");
-            String[] semanticParts = parts[0].split("\\.");
-            this.major = Integer.parseInt(semanticParts[0]);
-            this.minor = Integer.parseInt(semanticParts[1]);
-            this.patch = Integer.parseInt(semanticParts[2]);
+            try {
+                String[] semanticParts = parts[0].split("\\.");
+                this.major = Integer.parseInt(semanticParts[0]);
+                this.minor = Integer.parseInt(semanticParts[1]);
+                this.patch = Integer.parseInt(semanticParts[2]);
+            }catch (ArrayIndexOutOfBoundsException e) {
+                invalidate();
+            }
 
             Type type1 = Type.STABLE;
             int typeVersion1 = 0;

@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.jmb19905.util.commands.registry;
+package net.jmb19905.util.commands;
 
-public interface ICommand {
-    String getID();
+public abstract class CommandHandler {
+    public abstract void handle(ICommand command, String[] args);
 }

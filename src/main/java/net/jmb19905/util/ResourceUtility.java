@@ -86,7 +86,7 @@ public class ResourceUtility {
      * @author Greg Briggs - taken from: http://www.uofr.net/~greg/java/get-resource-listing.html
      */
     public static String[] getResourceFiles(Class<?> clazz, String path) {
-        if(!path.endsWith("/")) {
+        if (!path.endsWith("/")) {
             path = path + '/';
         }
         URL dirURL = getResourceAsURL(path);

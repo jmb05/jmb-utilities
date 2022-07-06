@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.jmb19905.util.commands.registry;
+package net.jmb19905.util.commands;
 
 import net.jmb19905.util.Logger;
 import net.jmb19905.util.registry.Type;

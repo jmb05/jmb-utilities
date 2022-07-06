@@ -18,7 +18,9 @@
 
 package net.jmb19905.util.registry;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class Registry {
@@ -35,6 +37,14 @@ public abstract class Registry {
             throw new NullPointerException("Could not find Registry Entry: " + id);
         }
         return type;
+    }
+
+    public Set<String> getAllIds() {
+        return registries.keySet();
+    }
+
+    public Collection<Type<?>> getAllTypes() {
+        return registries.values();
     }
 
 }

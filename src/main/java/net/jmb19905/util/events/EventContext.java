@@ -18,15 +18,15 @@
 
 package net.jmb19905.util.events;
 
-public abstract class EventContext {
+public abstract class EventContext<S> {
 
-    private final Object source;
+    private final S source;
 
-    public EventContext(Object source) {
+    public EventContext(S source) {
         this.source = source;
     }
 
-    public Object getSource() {
+    public S getSource() {
         return source;
     }
 }

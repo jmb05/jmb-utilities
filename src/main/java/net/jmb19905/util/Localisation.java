@@ -16,10 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.jmb19905.util.localisation;
-
-import net.jmb19905.util.Logger;
-import net.jmb19905.util.ResourceUtility;
+package net.jmb19905.util;
 
 import java.util.*;
 
