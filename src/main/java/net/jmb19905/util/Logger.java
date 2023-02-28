@@ -23,7 +23,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
+@SuppressWarnings({"ResultOfMethodCallIgnored", "unused"})
 public class Logger {
 
     /**
@@ -49,15 +49,15 @@ public class Logger {
 
     private static boolean closed = false;
 
-    public static PrintStream errorPrintStream;
+    public static PrintStream[] printStreams = new PrintStream[6];
 
-    static {
-        errorPrintStream = new PrintStream(new OutputStream() {
+    private static PrintStream createPrintStream(Level level) {
+        return new PrintStream(new OutputStream() {
             final StringBuilder builder = new StringBuilder();
             @Override
             public void write(int b) {
                 if(closed) return;
-                if(((byte) b) == '\n') Logger.error(builder.toString());
+                if(((byte) b) == '\n') Logger.log(builder.toString(), level);
                 else builder.append(StandardCharsets.UTF_8.decode(ByteBuffer.wrap(new byte[]{(byte) b})).get());
             }
         }, true, StandardCharsets.UTF_8);
@@ -220,6 +220,14 @@ public class Logger {
 
     public static void fatal(Throwable cause, String message) {
         log(cause, message, Level.FATAL);
+    }
+
+    public static PrintStream getPrintStream(Level level) {
+        PrintStream printStream = printStreams[level.getTier()];
+        if (printStream == null) {
+            printStream = createPrintStream(level);
+        }
+        return printStream;
     }
 
     public static void close() {
