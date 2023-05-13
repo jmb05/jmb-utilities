@@ -21,6 +21,7 @@ package net.jmb19905.util.bootstrapping;
 import net.jmb19905.util.Logger;
 import net.jmb19905.util.ResourceUtility;
 
+@SuppressWarnings("unused")
 public class Version {
 
     private int major;
@@ -74,21 +75,21 @@ public class Version {
      * Loads the version from the version.properties file if the instance is running in a development environment and
      * from the jars manifest if the instance is running as standalone program
      *
-     * @param isDev if the instance is running in a development environment
+     * @param deployState if the instance is running in a development environment
      * @return the version
      */
-    public static Version loadVersion(boolean isDev) {
-        String versionAsString = "0.0.0";
-        if (isDev) {
-            try {
-                versionAsString = ResourceUtility.readResourceProperties("version.properties").getProperty("version");
-            } catch (NullPointerException e) {
-                Logger.error(e, "Error reading version");
+    public static Version loadVersion(DeployState deployState) {
+        return new Version(switch (deployState) {
+            case DEV, DEV_DEPLOY, DEPLOY -> {
+                try {
+                    yield ResourceUtility.readResourceProperties("version.properties").getProperty("version");
+                } catch (NullPointerException e) {
+                    Logger.error(e, "Error reading version");
+                }
+                yield "0.0.0-invalid";
             }
-        } else {
-            versionAsString = Version.class.getPackage().getImplementationVersion();
-        }
-        return new Version(versionAsString);
+            default -> Version.class.getPackage().getImplementationVersion();
+        });
     }
 
     private void invalidate() {
@@ -127,7 +128,7 @@ public class Version {
             } else if (type == Type.RELEASE_CANDIDATE) {
                 typeString = "-rc";
             }
-            typeString = typeString.concat(typeVersion + "");
+            typeString = typeString.concat(String.valueOf(typeVersion));
         }
         return semanticString + typeString;
     }

@@ -21,6 +21,7 @@ package net.jmb19905.util.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.jmb19905.util.Logger;
 import net.jmb19905.util.ShutdownManager;
+import net.jmb19905.util.bootstrapping.DeployState;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,8 +33,8 @@ public class ConfigManager {
     private static String configPath;
     private static boolean initialized = false;
 
-    public static void init(String name, boolean devEnv) {
-        if(!devEnv) {
+    public static void init(String name, DeployState deployState) {
+        if(deployState == DeployState.CLIENT) {
             if (System.getProperty("os.name").equals("Linux")) {
                 configPath = System.getProperty("user.home") + "/.config/" + name +  "/";
                 initialized = true;
@@ -44,6 +45,7 @@ public class ConfigManager {
         initialized = true;
     }
 
+    @SuppressWarnings("unused")
     public static void setConfigPath(String configPath) {
         ConfigManager.configPath = configPath;
     }

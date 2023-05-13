@@ -2,3 +2,4 @@
 /.gradle/
 /.idea/discord.xml
 /build/
+/logs/

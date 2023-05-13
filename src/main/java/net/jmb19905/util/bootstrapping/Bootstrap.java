@@ -23,8 +23,7 @@ import net.jmb19905.util.ShutdownManager;
 import net.jmb19905.util.config.Config;
 import net.jmb19905.util.config.ConfigManager;
 
-import java.util.Arrays;
-
+@SuppressWarnings("unused")
 public class Bootstrap {
 
     private final String[] args;
@@ -35,7 +34,7 @@ public class Bootstrap {
     private Class<? extends Config> configClass = null;
 
     protected Version version;
-    protected boolean isDevEnv;
+    protected DeployState deployState;
     protected Config config;
 
     private boolean bootStrapped = false;
@@ -77,7 +76,7 @@ public class Bootstrap {
             return this;
         }else bootStrapped = true;
         if (args.length > 0) {
-            isDevEnv = Arrays.asList(args).contains("dev");
+            deployState = DeployState.fromString(args[0]);
         }
         if(loggerSignature != null) {
             Logger.initLogFile(loggerSignature);
@@ -88,10 +87,10 @@ public class Bootstrap {
                 Logger.close();
             });
         }if(useVersion) {
-            version = Version.loadVersion(isDevEnv);
+            version = Version.loadVersion(deployState);
         }
         if(useConfig) {
-            ConfigManager.init(programSignature, isDevEnv);
+            ConfigManager.init(programSignature, deployState);
             config = ConfigManager.loadConfigFile(configClass);
             Logger.info("Loaded configs");
         }
@@ -102,8 +101,8 @@ public class Bootstrap {
         return version;
     }
 
-    public boolean isDevEnv() {
-        return isDevEnv;
+    public DeployState getDeployState() {
+        return deployState;
     }
 
     public Config getConfig() {
