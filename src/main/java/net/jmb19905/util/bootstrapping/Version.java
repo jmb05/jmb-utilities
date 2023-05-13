@@ -43,21 +43,23 @@ public class Version {
                 invalidate();
             }
 
-            Type type1 = Type.STABLE;
+            Type type1 = Type.INVALID;
             int typeVersion1 = 0;
-            try {
-                if (parts[1].startsWith("alpha")) {
-                    type1 = Type.ALPHA;
-                    parts[1] = parts[1].replaceAll("alpha", "");
-                } else if (parts[1].startsWith("beta")) {
-                    type1 = Type.BETA;
-                    parts[1] = parts[1].replaceAll("beta", "");
-                } else if (parts[1].startsWith("rc")) {
-                    type1 = Type.RELEASE_CANDIDATE;
-                    parts[1] = parts[1].replaceAll("rc", "");
-                }
+            if (parts.length == 1) {
+                type1 = Type.STABLE;
+            } else if (parts[1].startsWith("alpha")) {
+                type1 = Type.ALPHA;
+                parts[1] = parts[1].replaceAll("alpha", "");
                 typeVersion1 = Integer.parseInt(parts[1]);
-            } catch (ArrayIndexOutOfBoundsException e) {/*Version is Stable*/}
+            } else if (parts[1].startsWith("beta")) {
+                type1 = Type.BETA;
+                parts[1] = parts[1].replaceAll("beta", "");
+                typeVersion1 = Integer.parseInt(parts[1]);
+            } else if (parts[1].startsWith("rc")) {
+                type1 = Type.RELEASE_CANDIDATE;
+                parts[1] = parts[1].replaceAll("rc", "");
+                typeVersion1 = Integer.parseInt(parts[1]);
+            }
             this.type = type1;
             this.typeVersion = typeVersion1;
         }
@@ -96,7 +98,7 @@ public class Version {
         this.major = 0;
         this.minor = 0;
         this.patch = 0;
-        this.type = Type.STABLE;
+        this.type = Type.INVALID;
         this.typeVersion = 0;
     }
 
@@ -119,20 +121,16 @@ public class Version {
     @Override
     public String toString() {
         String semanticString = major + "." + minor + "." + patch;
-        String typeString = "";
-        if (type != Type.STABLE) {
-            if (type == Type.ALPHA) {
-                typeString = "-alpha";
-            } else if (type == Type.BETA) {
-                typeString = "-beta";
-            } else if (type == Type.RELEASE_CANDIDATE) {
-                typeString = "-rc";
-            }
-            typeString = typeString.concat(String.valueOf(typeVersion));
-        }
+        String typeString = switch (type) {
+            case ALPHA -> "-alpha" + typeVersion;
+            case BETA -> "-beta" + typeVersion;
+            case RELEASE_CANDIDATE -> "-rc" + typeVersion;
+            case STABLE -> "";
+            case INVALID -> "-invalid";
+        };
         return semanticString + typeString;
     }
 
-    public enum Type {ALPHA, BETA, RELEASE_CANDIDATE, STABLE}
+    public enum Type {ALPHA, BETA, RELEASE_CANDIDATE, STABLE, INVALID}
 
 }
