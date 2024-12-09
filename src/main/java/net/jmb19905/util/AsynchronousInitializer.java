@@ -20,20 +20,40 @@ package net.jmb19905.util;
 
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * Initializes a value asynchronously
+ * @param <T> the type of the value to be initialized
+ */
 public class AsynchronousInitializer<T> {
 
     private final CountDownLatch cancelLatch = new CountDownLatch(1);
     private T t = null;
 
+    /**
+     * Creates an object of type AsynchronousInitializer
+     */
+    public AsynchronousInitializer() {}
+
+    /**
+     * Initialized the value
+     * @param initT the value
+     */
     public void init(T initT) {
         t = initT;
         cancel();
     }
 
+    /**
+     * Releases the waiting threads
+     */
     public void cancel() {
         cancelLatch.countDown();
     }
 
+    /**
+     * Waits until the value is initialized and then returns it
+     * @return the initialized value
+     */
     public T get() {
         try {
             cancelLatch.await();

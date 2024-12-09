@@ -34,6 +34,8 @@ import java.security.spec.X509EncodedKeySpec;
  */
 public class EncryptionUtility {
 
+    private EncryptionUtility() {}
+
     /**
      * Decodes a PublicKey from a byte-array
      *
@@ -73,7 +75,7 @@ public class EncryptionUtility {
      * @param value      the String to be encrypted
      * @return the encrypted String
      */
-    public static String encryptString(Encryption encryption, String value) {
+    public static String encryptString(IEncryption encryption, String value) {
         return new String(encryption.encrypt(value.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
     }
 
@@ -84,7 +86,7 @@ public class EncryptionUtility {
      * @param value      the String to be decrypted
      * @return the decrypted String
      */
-    public static String decryptString(Encryption encryption, String value) {
+    public static String decryptString(IEncryption encryption, String value) {
         return new String(encryption.decrypt(value.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
     }
 
@@ -95,7 +97,7 @@ public class EncryptionUtility {
      * @param data       the 2D byte-array
      * @return an encrypted 2D byte-array
      */
-    public static byte[][] encrypt2DBytes(Encryption encryption, byte[][] data) {
+    public static byte[][] encrypt2DBytes(IEncryption encryption, byte[][] data) {
         for (int i = 0; i < data.length; i++) {
             data[i] = encryption.encrypt(data[i]);
         }
@@ -109,7 +111,7 @@ public class EncryptionUtility {
      * @param data       the 2D byte-array
      * @return a decrypted 2D byte-array
      */
-    public static byte[][] decrypt2DBytes(Encryption encryption, byte[][] data) {
+    public static byte[][] decrypt2DBytes(IEncryption encryption, byte[][] data) {
         for (int i = 0; i < data.length; i++) {
             data[i] = encryption.decrypt(data[i]);
         }

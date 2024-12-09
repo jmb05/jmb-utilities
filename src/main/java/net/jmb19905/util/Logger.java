@@ -26,20 +26,6 @@ import java.nio.file.*;
 @SuppressWarnings({"ResultOfMethodCallIgnored", "unused"})
 public class Logger {
 
-    /**
-     * Color values for ANSI compatible consoles
-     */
-
-    public static final String ANSI_RESET = "\u001B\\[0m";
-    public static final String ANSI_BLACK = "\u001B\\[30m";
-    public static final String ANSI_RED = "\u001B\\[31m";
-    public static final String ANSI_GREEN = "\u001B\\[32m";
-    public static final String ANSI_YELLOW = "\u001B\\[33m";
-    public static final String ANSI_BLUE = "\u001B\\[34m";
-    public static final String ANSI_PURPLE = "\u001B\\[35m";
-    public static final String ANSI_CYAN = "\u001B\\[36m";
-    public static final String ANSI_WHITE = "\u001b\\[37;1m";
-
     private static Level level = Level.INFO;
 
     private static boolean isOnNewLine = true;
@@ -93,7 +79,7 @@ public class Logger {
     private static void writeLine(String s) {
         if (writer != null && !closed) {
             try {
-                writer.write(replaceANSI(s));
+                writer.write(ANSIColors.replaceANSI(s));
                 writer.newLine();
                 writer.flush();
             } catch (IOException e) {
@@ -273,19 +259,35 @@ public class Logger {
         return stringWriter.toString();
     }
 
-    private static String replaceANSI(String in) {
-        return in.replaceAll(ANSI_BLACK, "").replaceAll(ANSI_BLUE, "").replaceAll(ANSI_RED, "")
-                .replaceAll(ANSI_RESET, "").replaceAll(ANSI_CYAN, "").replaceAll(ANSI_GREEN, "")
-                .replaceAll(ANSI_PURPLE, "").replaceAll(ANSI_WHITE, "").replaceAll(ANSI_YELLOW, "");
-
-    }
-
     /**
      * Tells the user the severity of messages and exceptions.
      * Tells the console the color of the message.
      */
     public enum Level {
-        TRACE(0, ANSIColors.getBlue()), DEBUG(1, ANSIColors.getGreen()), INFO(2, ANSIColors.getWhite()), WARN(3, ANSIColors.getYellow()), ERROR(4, ANSIColors.getRed()), FATAL(5, ANSIColors.getRed());
+        /**
+         * Trace level: for in depth debugging of code
+         */
+        TRACE(0, ANSIColors.getBlue()),
+        /**
+         * Debug level: diagnostic information
+         */
+        DEBUG(1, ANSIColors.getGreen()),
+        /**
+         * Info level: General information
+         */
+        INFO(2, ANSIColors.getWhite()),
+        /**
+         * Warn level: warnings that could bring unexpected behaviour -> recoverable
+         */
+        WARN(3, ANSIColors.getYellow()),
+        /**
+         * Error level: partly recoverable but requires intervention
+         */
+        ERROR(4, ANSIColors.getRed()),
+        /**
+         * Fatal level: error which is not recoverable application will exit
+         */
+        FATAL(5, ANSIColors.getRed());
 
         private final int tier;
         /**

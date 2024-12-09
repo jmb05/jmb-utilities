@@ -21,19 +21,33 @@ package net.jmb19905.util.commands;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Manges all CommandTypes and Commands and handles them accordingly
+ */
 public class CommandManager {
+
+    private CommandManager() {}
 
     private static CommandThread thread;
 
+    /**
+     * Starts the command thread
+     */
     public static void init() {
         thread = new CommandThread();
         thread.start();
     }
 
+    /**
+     * Stops the command thread
+     */
     public static void close() {
         thread.stop();
     }
 
+    /**
+     * The tread responsible for listening for and running the commands
+     */
     private static class CommandThread implements Runnable {
 
         private Thread thread;
@@ -56,7 +70,7 @@ public class CommandManager {
                 String id = parts[0];
                 String[] args = Arrays.copyOfRange(parts, 1, parts.length);
                 CommandType<? extends ICommand> type = CommandRegistry.getInstance().getCommandType(line.split(" ")[0]);
-                type.getHandler().handle(type.newCommandInstance(), args);
+                type.handle(args);
             }
         }
     }

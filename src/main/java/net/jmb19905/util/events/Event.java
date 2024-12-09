@@ -22,20 +22,38 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.EventObject;
 
+
+/**
+ * An Event which notifies its listeners when fired
+ * @param <EC> the context in which the Event took place
+ */
 public abstract class Event<EC extends EventContext<?>> extends EventObject {
     private final EC ctx;
     private final String id;
 
+    /**
+     * Creates an Event instance
+     * @param ctx the context of the Event
+     * @param id the string id of the event
+     */
     public Event(@NotNull EC ctx, String id) {
         super(ctx.getSource());
         this.ctx = ctx;
         this.id = id;
     }
 
+    /**
+     * Provides the Event Context
+     * @return the Event Context
+     */
     public EC getContext() {
         return ctx;
     }
 
+    /**
+     * Provides the Event id
+     * @return the event id
+     */
     public String getId() {
         return id;
     }

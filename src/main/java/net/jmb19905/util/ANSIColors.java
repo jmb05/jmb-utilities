@@ -18,51 +18,151 @@
 
 package net.jmb19905.util;
 
-public class ANSIColors {
+/**
+ * Color values for ANSI compatible consoles
+ */
+public final class ANSIColors {
 
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_BLACK = "\u001B[30m";
-    private static final String ANSI_RED = "\u001B[31m";
-    private static final String ANSI_GREEN = "\u001B[32m";
-    private static final String ANSI_YELLOW = "\u001B[33m";
-    private static final String ANSI_BLUE = "\u001B[34m";
-    private static final String ANSI_PURPLE = "\u001B[35m";
-    private static final String ANSI_CYAN = "\u001B[36m";
-    private static final String ANSI_WHITE = "\u001b[37;1m";
+    private ANSIColors(){}
+    
+    private static final String ANSI_ESCAPE = "\u001B[";
 
+    /**
+     *
+     * Reset Code: Resets the style to default
+     */
+    private static final String ANSI_RESET = "0m";
+
+    /**
+     *
+     * Black Code: Makes subsequent text black
+     */
+    private static final String ANSI_BLACK = "30m";
+
+    /**
+     *
+     * Red Code: Makes subsequent text red
+     */
+    private static final String ANSI_RED = "31m";
+
+    /**
+     *
+     * Green Code: Makes subsequent text green
+     */
+    private static final String ANSI_GREEN = "32m";
+
+    /**
+     *
+     * Yellow Code: Makes subsequent text yellow
+     */
+    private static final String ANSI_YELLOW = "33m";
+
+    /**
+     *
+     * Blue Code: Makes subsequent text blue
+     */
+    private static final String ANSI_BLUE = "34m";
+
+    /**
+     *
+     * Purple Code: Makes subsequent text purple
+     */
+    private static final String ANSI_PURPLE = "35m";
+
+    /**
+     *
+     * Cyan Code: Makes subsequent text cyan
+     */
+    private static final String ANSI_CYAN = "36m";
+
+    /**
+     *
+     * White Code: Makes subsequent text white
+     */
+    private static final String ANSI_WHITE = "37;1m";
+
+    /**
+     * black color code
+     * @return the black code
+     */
     public static String getBlack() {
-        return ANSI_BLACK;
+        return ANSI_ESCAPE + ANSI_BLACK;
     }
 
+    /**
+     * blue color code
+     * @return the blue code
+     */
     public static String getBlue() {
-        return ANSI_BLUE;
+        return ANSI_ESCAPE + ANSI_BLUE;
     }
 
+    /**
+     * green color code
+     * @return the green code
+     */
     public static String getGreen() {
-        return ANSI_GREEN;
+        return ANSI_ESCAPE + ANSI_GREEN;
     }
 
+    /**
+     * cyan color code
+     * @return the cyan code
+     */
     public static String getCyan() {
-        return ANSI_CYAN;
+        return ANSI_ESCAPE + ANSI_CYAN;
     }
 
+    /**
+     * purple color code
+     * @return the purple code
+     */
     public static String getPurple() {
-        return ANSI_PURPLE;
+        return ANSI_ESCAPE + ANSI_PURPLE;
     }
 
+    /**
+     * red color code
+     * @return the red code
+     */
     public static String getRed() {
-        return ANSI_RED;
+        return ANSI_ESCAPE + ANSI_RED;
     }
 
+    /**
+     * reset code
+     * @return the reset code
+     */
     public static String getReset() {
-        return ANSI_RESET;
+        return ANSI_ESCAPE + ANSI_RESET;
     }
 
+    /**
+     * white color code
+     * @return the white code
+     */
     public static String getWhite() {
-        return ANSI_WHITE;
+        return ANSI_ESCAPE + ANSI_WHITE;
     }
 
+    /**
+     * yellow color code
+     * @return the yellow code
+     */
     public static String getYellow() {
-        return ANSI_YELLOW;
+        return ANSI_ESCAPE + ANSI_YELLOW;
     }
+
+    /**
+     * Removes the color codes from strings - useful for incompatible consoles or files
+     * @param in the string
+     * @return the string with stripped out color codes
+     */
+    public static String replaceANSI(String in) {
+        return in.replace(getBlack(), "").replace(getBlue(), "").replace(getRed(), "")
+                .replace(getReset(), "").replace(getCyan(), "").replace(getGreen(), "")
+                .replace(getPurple(), "").replace(getWhite(), "").replace(getYellow(), "");
+
+    }
+
 }

@@ -18,6 +18,21 @@
 
 package net.jmb19905.util.commands;
 
-public abstract class CommandHandler {
-    public abstract void handle(ICommand command, String[] args);
+/**
+ * Abstract Command Handler, should be implemented for every implementor of ICommand
+ * @param <C> the Command Type
+ */
+public abstract class CommandHandler<C extends ICommand> {
+
+    /**
+     * Creates an object of type CommandHandler
+     */
+    public CommandHandler() {}
+
+    /**
+     * Abstract method that handles the command
+     * @param command the command
+     * @param args the arguments
+     */
+    public abstract void handle(C command, String[] args);
 }

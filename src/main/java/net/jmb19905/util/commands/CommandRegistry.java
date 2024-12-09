@@ -20,18 +20,43 @@ package net.jmb19905.util.commands;
 
 import net.jmb19905.util.registry.Registry;
 
+/**
+ * Registry for all the command types
+ */
 public class CommandRegistry extends Registry {
 
     private static final CommandRegistry instance = new CommandRegistry();
 
-    public void register(String id, Class<? extends ICommand> commandClass, CommandHandler handler) {
+    /**
+     * Creates an object of type CommandRegistry
+     */
+    public CommandRegistry() {}
+
+    /**
+     * Registers a new command type
+     * @param id id of the command type
+     * @param commandClass class of the command
+     * @param handler handler for this type
+     * @param <C> the command type
+     */
+    public <C extends ICommand> void register(String id, Class<C> commandClass, CommandHandler<C> handler) {
         super.register(id, new CommandType<>(commandClass, handler));
     }
 
+    /**
+     * Returns the command type for a specific id
+     * @param id the command type id
+     * @return the command type
+     * @throws NullPointerException when there is no Command Type for this id
+     */
     public CommandType<? extends ICommand> getCommandType(String id) {
         return (CommandType<? extends ICommand>) super.getRegistry(id);
     }
 
+    /**
+     * Provides the instance of the command registry - used to globally register commands
+     * @return the instance of the registry (singleton)
+     */
     public static CommandRegistry getInstance() {
         return instance;
     }

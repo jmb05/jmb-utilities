@@ -39,7 +39,7 @@ import java.util.Base64;
 
 @JsonSerialize(using = Encryption.Serializer.class)
 @JsonDeserialize(using = Encryption.Deserializer.class)
-public class Encryption {
+public class Encryption implements IEncryption {
 
     private PublicKey publickey;
     private PrivateKey privateKey;
@@ -47,25 +47,16 @@ public class Encryption {
     private byte[] sharedSecret;
 
     private static final String ALGO = "AES";
-
-    private boolean active = true;
-
-    public Encryption() {
-        this(KeySize.SIZE_256);
-    }
-
-    public Encryption(KeySize size) {
-        this(size.getSize());
-    }
+    private static final int KEY_SIZE = 256;
 
     /**
      * Creates a new Encryption with unique Private and Public Keys
      */
-    public Encryption(int size) {
+    public Encryption() {
         KeyPairGenerator kpg;
         try {
             kpg = KeyPairGenerator.getInstance("EC");
-            kpg.initialize(size);
+            kpg.initialize(KEY_SIZE);
             KeyPair kp = kpg.generateKeyPair();
             publickey = kp.getPublic();
             privateKey = kp.getPrivate();
@@ -102,10 +93,6 @@ public class Encryption {
         } catch (NullPointerException e) {
             throw new InvalidEncryptionException("The Public or Private key is invalid");
         }
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     /**
@@ -165,6 +152,7 @@ public class Encryption {
     }
 
     /**
+     * Provides the PublicKey of the Encryption endpoint
      * @return the PublicKey
      */
     public PublicKey getPublicKey() {
@@ -181,7 +169,7 @@ public class Encryption {
     }
 
 
-    protected Key generateKey() {
+    private Key generateKey() {
         return new SecretKeySpec(sharedSecret, ALGO);
     }
 
@@ -194,11 +182,19 @@ public class Encryption {
         return sharedSecret;
     }
 
+    /**
+     * Check if the encryption endpoint has a shared secret available and can be used to encrypt and decrypt
+     * @return if the endpoint is usable
+     */
     public boolean isUsable() {
-        return sharedSecret != null && active;
+        return sharedSecret != null;
     }
 
+    /**
+     * Serializes the Encryption endpoint (public, private and shared key) using the Jackson Json Library
+     */
     public static class Serializer extends JsonSerializer<Encryption> {
+        private Serializer() {}
         @Override
         public void serialize(Encryption value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
             gen.writeStartObject();
@@ -213,7 +209,11 @@ public class Encryption {
         }
     }
 
+    /**
+     * Deserializes the Encryption endpoint (public, private and shared key) using the Jackson Json Library
+     */
     public static class Deserializer extends JsonDeserializer<Encryption> {
+        private Deserializer(){}
         @Override
         public Encryption deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             JsonNode node = p.getCodec().readTree(p);
@@ -241,20 +241,4 @@ public class Encryption {
                 ", sharedSecret=" + SerializationUtility.encodeBinary(sharedSecret) +
                 '}';
     }
-
-    public enum KeySize {
-        SIZE_128(256),
-        SIZE_192(192),
-        SIZE_256(256),
-        SIZE_512(512);
-
-        private final int size;
-        KeySize(int size) {
-            this.size = size;
-        }
-        public int getSize() {
-            return size;
-        }
-    }
-
 }

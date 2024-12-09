@@ -6,7 +6,12 @@ plugins {
 }
 
 group 'net.jmb19905'
-version '1.2.0'
+version '1.2.2'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 repositories {
     mavenCentral()
@@ -45,10 +50,10 @@ publishing {
     }
 
     publications {
-        maven(MavenPublication) {
+        mavenJava(MavenPublication) {
+            artifactId = 'jmb-utilities'
             description = 'Utilities used by the jmb projects and libraries'
             groupId = group
-            artifactId = 'jmb-utilities'
             version = version
 
             from components.java

@@ -20,6 +20,10 @@ package net.jmb19905.util;
 
 import java.util.*;
 
+/**
+ * Makes it possible to use different languages.
+ * Localized strings for different languages are stored in a ResourceBundle in the projects resources.
+ */
 public class Localisation {
 
     private static ResourceBundle resourceBundle;
@@ -29,12 +33,20 @@ public class Localisation {
         mapLanguages();
     }
 
+    /**
+     * Reloads, so that a different locale is used
+     * @param localeId the new locale
+     */
     public static void reload(String localeId) {
         String[] localeParts = localeId.split("_");
         Locale locale = new Locale(localeParts[0], localeParts[1]);
         resourceBundle = ResourceBundle.getBundle("lang.bundle", locale);
     }
 
+    /**
+     * Provides all locale Names
+     * @return an array of the names of all available locales
+     */
     public static String[] getLocaleNames() {
         return nameMap.values().toArray(new String[0]);
     }
@@ -56,14 +68,29 @@ public class Localisation {
                 });
     }
 
+    /**
+     * Finds the id of a locale based on its name (Name is specified in the ResourceBundle)
+     * @param name the locale name
+     * @return the locale id
+     */
     public static String getId(String name) {
         return nameMap.keySet().stream().filter(id -> nameMap.get(id).equals(name)).findFirst().orElse("");
     }
 
+    /**
+     * Provides the name of a locale.
+     * @param id the locale id
+     * @return the locale name for the given locale id (the locale name is specified in the ResourceBundle)
+     */
     public static String getName(String id) {
         return nameMap.get(id);
     }
 
+    /**
+     * Gets localized text.
+     * @param key the key used to refer to localized text
+     * @return the localized text using the current locale
+     */
     public static String get(String key) {
         try {
             return resourceBundle.getString(key);
@@ -73,6 +100,12 @@ public class Localisation {
         }
     }
 
+    /**
+     * Gets localized text and replaces all '~' with the input
+     * @param key the key used to refer to localized text
+     * @param input replaces all '~' in the localized text
+     * @return the localized text
+     */
     public static String get(String key, String input) {
         return get(key).replaceAll("~", input);
     }

@@ -24,20 +24,37 @@ import net.jmb19905.util.registry.Type;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * CommandType Holds the handler for a specific type of commands
+ * @param <P> the type of the commands
+ */
 public class CommandType<P extends ICommand> extends Type<P> {
 
     private final Class<P> commandClass;
-    private final CommandHandler handler;
+    private final CommandHandler<P> handler;
 
-    public CommandType(Class<P> commandClass, CommandHandler handler) {
+    /**
+     * Creates an object of type CommandType
+     * @param commandClass class of the commands
+     * @param handler handler for the commands
+     */
+    public CommandType(Class<P> commandClass, CommandHandler<P> handler) {
         this.commandClass = commandClass;
         this.handler = handler;
     }
 
-    public CommandHandler getHandler() {
+    /**
+     * Provides the CommandHandler of this CommandType which executes the actions of this command
+     * @return the command handler
+     */
+    public CommandHandler<P> getHandler() {
         return handler;
     }
 
+    /**
+     * Creates a new instance of the command
+     * @return the command instance
+     */
     public P newCommandInstance() {
         try {
             Constructor<P> constructor = commandClass.getConstructor();
@@ -46,6 +63,14 @@ public class CommandType<P extends ICommand> extends Type<P> {
             Logger.error(e);
             return null;
         }
+    }
+
+    /**
+     * Handles a command
+     * @param args the arguments of the command
+     */
+    public void handle(String[] args) {
+        handler.handle(newCommandInstance(), args);
     }
 
 }

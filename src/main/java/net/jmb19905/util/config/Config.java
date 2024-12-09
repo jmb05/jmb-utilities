@@ -18,8 +18,20 @@
 
 package net.jmb19905.util.config;
 
+/**
+ * Abstract class for holding all values that will be loaded from a config file
+ */
 public abstract class Config {
 
+    /**
+     * Creates an object of type Config
+     */
+    public Config(){}
+
+    /**
+     * The Name is needed to find the correct config file
+     * @return the name
+     */
     public abstract String getName();
 
 }

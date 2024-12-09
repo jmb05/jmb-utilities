@@ -21,22 +21,46 @@ package net.jmb19905.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Clock used to track time
+ */
 public class Clock {
 
     private static long start;
 
+    /**
+     * Creates an object of type Clock
+     */
+    public Clock() {}
+
+    /**
+     * Starts the clock
+     */
     public static void init() {
         start = System.currentTimeMillis();
     }
 
+    /**
+     * Provides the time the clock was started as timestamp
+     * @return the start time
+     */
     public static long getStart() {
         return start;
     }
 
+    /**
+     * Provides the amount of time which has passed since the start (in milliseconds)
+     * @return the current elapsed time
+     */
     public static int getTime() {
         return (int) (System.currentTimeMillis() - start);
     }
 
+    /**
+     * Formats the current date
+     * @param pattern the pattern for formatting
+     * @return the formatted date
+     */
     public static String getCompactDate(String pattern) {
         SimpleDateFormat format = new SimpleDateFormat(pattern);
         Date now = new Date();

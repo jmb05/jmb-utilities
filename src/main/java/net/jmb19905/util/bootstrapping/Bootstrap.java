@@ -23,6 +23,9 @@ import net.jmb19905.util.ShutdownManager;
 import net.jmb19905.util.config.Config;
 import net.jmb19905.util.config.ConfigManager;
 
+/**
+ * Used to initialise the Program things like the version, logger, how it is deployed and the config
+ */
 @SuppressWarnings("unused")
 public class Bootstrap {
 
@@ -33,20 +36,34 @@ public class Bootstrap {
     private boolean useConfig = false;
     private Class<? extends Config> configClass = null;
 
+    /**
+     * The version of the program
+     */
     protected Version version;
+    /**
+     * The deploy-state of the program
+     */
     protected DeployState deployState;
+    /**
+     * The config of the program
+     */
     protected Config config;
 
     private boolean bootStrapped = false;
 
-    protected Bootstrap(String[] args) {
+    /**
+     * Creates an object of type Bootstrap
+     * @param args the program arguments
+     */
+    public Bootstrap(String[] args) {
         this.args = args;
     }
 
-    public static Bootstrap newBootstrap(String[] args) {
-        return new Bootstrap(args);
-    }
-
+    /**
+     * Set the signature of the logger (and the logfile)
+     * @param loggerSignature signature of the logger
+     * @return the bootstrap
+     */
     public Bootstrap loggerSignature(String loggerSignature) {
         if(!bootStrapped) {
             this.loggerSignature = loggerSignature;
@@ -54,6 +71,10 @@ public class Bootstrap {
         return this;
     }
 
+    /**
+     * enables loading the version
+     * @return the bootstrap
+     */
     public Bootstrap useVersion() {
         if(!bootStrapped) {
             useVersion = true;
@@ -61,6 +82,12 @@ public class Bootstrap {
         return this;
     }
 
+    /**
+     * enables loading config
+     * @param programSignature used to find the correct file
+     * @param configClass the class of the config
+     * @return the boostrap
+     */
     public Bootstrap config(String programSignature, Class<? extends Config> configClass) {
         if(!bootStrapped) {
             this.useConfig = true;
@@ -70,6 +97,10 @@ public class Bootstrap {
         return this;
     }
 
+    /**
+     * Loads all requested values
+     * @return the boostrap
+     */
     public Bootstrap bootstrap() {
         if(bootStrapped) {
             Logger.warn("Bootstrap cannot be executed twice");
@@ -97,14 +128,26 @@ public class Bootstrap {
         return this;
     }
 
+    /**
+     * Provides the program version
+     * @return the loaded version
+     */
     public Version getVersion() {
         return version;
     }
 
+    /**
+     * Provides the deploy-state of the program
+     * @return the deploy-state
+     */
     public DeployState getDeployState() {
         return deployState;
     }
 
+    /**
+     * Provides the config instance of the program
+     * @return the config
+     */
     public Config getConfig() {
         return config;
     }
