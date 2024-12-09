@@ -41,7 +41,7 @@ test {
 publishing {
     repositories {
         maven {
-            url 'https://repo.bennettcraft.com/releases'
+            url 'https://repo.jmb19905.net/releases'
             credentials {
                 username 'jmb'
                 password System.getenv("JMB_REPO_TOKEN")
